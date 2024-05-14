@@ -1,21 +1,20 @@
 pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.android.library") {
+                useModule("com.android.tools.build:gradle:${requested.version}")
+            }
+            if (requested.id.id == "com.android.application") {
+                useModule("com.android.tools.build:gradle:${requested.version}")
+            }
+        }
+    }
     repositories {
-        google()
-        mavenCentral()
         gradlePluginPortal()
-    }
-}
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
         google()
         mavenCentral()
     }
 }
+rootProject.name = "DruTask"
+include(":app",":core",":presentation",":domain",":data")
 
-rootProject.name = "Dru Task"
-include(":app")
-include(":core")
-include(":data")
-include(":domain")
-include(":presentaion")
