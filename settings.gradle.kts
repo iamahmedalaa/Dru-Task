@@ -15,3 +15,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Dru Task"
 include(":app")
+include(":core")
+include(":data")
+include(":domain")
+include(":presentaion")
