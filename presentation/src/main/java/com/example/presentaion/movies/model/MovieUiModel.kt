@@ -23,5 +23,5 @@ data class MovieUiModel(
 
 data class MovieCategoryUi(
     val name: String? = null,
-    val id: Long,
+    val id: Long? = null,
 )

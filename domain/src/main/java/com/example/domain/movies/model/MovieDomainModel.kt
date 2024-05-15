@@ -18,5 +18,5 @@ data class MovieDomainModel(
 
 data class MovieCategoryDomain(
     val name: String? = null,
-    val id: Long,
+    val id: Long? = null,
 )

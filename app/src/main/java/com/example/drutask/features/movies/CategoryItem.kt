@@ -34,7 +34,7 @@ fun CategoryItem(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(all = 8.dp)
                 .fillMaxWidth()
         ) {
 

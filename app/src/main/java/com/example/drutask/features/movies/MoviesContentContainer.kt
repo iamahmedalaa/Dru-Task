@@ -32,6 +32,7 @@ fun MoviesContentContainer(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(14.dp),
             modifier = Modifier
+                .padding(top = 8.dp)
                 .fillMaxWidth()
         ) {
             items(

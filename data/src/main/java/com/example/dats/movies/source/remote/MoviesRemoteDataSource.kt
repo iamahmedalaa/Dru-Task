@@ -21,6 +21,7 @@ class MoviesRemoteDataSource(
     private val remoteKeysLocalDataSource: RemoteKeysLocalDataSource,
 ) : RemoteMediator<Int, MovieModel>() {
 
+    var catId: String? = null
     override suspend fun initialize(): InitializeAction {
         val cacheTimeout = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
 
@@ -43,6 +44,7 @@ class MoviesRemoteDataSource(
                     remoteKeysLocalDataSource.getRemoteKeyClosestToCurrentPosition(state)
                 remoteKeys?.nextKey?.minus(1) ?: 1
             }
+
             LoadType.PREPEND -> {
                 val remoteKeys = remoteKeysLocalDataSource.getRemoteKeyForFirstItem(state)
                 val prevKey = remoteKeys?.prevKey
@@ -50,6 +52,7 @@ class MoviesRemoteDataSource(
                     .Success(endOfPaginationReached = remoteKeys != null)
 
             }
+
             LoadType.APPEND -> {
                 val remoteKeys = remoteKeysLocalDataSource.getRemoteKeyForLastItem(state)
                 val nextKey = remoteKeys?.nextKey
@@ -57,7 +60,11 @@ class MoviesRemoteDataSource(
                     .Success(endOfPaginationReached = remoteKeys != null)
             }
         }
-        return loadAndCache(loadType, page)
+        return if (catId.isNullOrEmpty()) {
+            loadAndCache(loadType, page)
+        } else {
+            MediatorResult.Success(endOfPaginationReached = true)
+        }
     }
 
     private suspend fun loadAndCache(loadType: LoadType, page: Int): MediatorResult {
@@ -89,13 +96,12 @@ class MoviesRemoteDataSource(
     suspend fun loadAndCacheCategories() = flow {
         val localCat = moviesLocalDataSource.getMoviesCategories()
 
-        if (localCat.isNullOrEmpty()){
+        if (localCat.isNullOrEmpty()) {
             val apiResponse = moviesApi.fetchMoviesCategories()
             val categories = apiResponse.genres
             moviesLocalDataSource.insertCategories(categories)
             emit(categories)
-        }else
-        {
+        } else {
             emit(localCat)
         }
     }
