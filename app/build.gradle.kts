@@ -1,69 +1,124 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    kotlin("android")
+    kotlin("kapt")
+    id("kotlin-android")
+    id("kotlin-parcelize")
+    id("com.google.devtools.ksp") version("1.8.0-1.0.9")
+    id("dagger.hilt.android.plugin")
 }
 
+
+
 android {
+    compileSdkVersion(Sdk.COMPILE_SDK_VERSION)
     namespace = "com.example.drutask"
-    compileSdk = 34
-
+    android.buildFeatures.buildConfig= true
     defaultConfig {
-        applicationId = "com.example.drutask"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdkVersion(Sdk.MIN_SDK_VERSION)
+        targetSdkVersion(Sdk.TARGET_SDK_VERSION)
 
+        applicationId = AppCoordinates.APP_ID
+        versionCode = AppCoordinates.APP_VERSION_CODE
+        versionName = AppCoordinates.APP_VERSION_NAME
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
     }
 
+
+
     buildTypes {
-        release {
-            isMinifyEnabled = false
+        getByName("debug") {
+            isDebuggable = true
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+
+        getByName("release") {
+            isDebuggable = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+    lintOptions {
+        isWarningsAsErrors = true
+        isAbortOnError = true
     }
-    buildFeatures {
-        compose = true
-    }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
+    android.buildFeatures.compose = true
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.9.0")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation(project(":core"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":presentation"))
+
+    implementation(kotlin("stdlib-jdk7"))
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.hilt:hilt-work:1.0.0")
+
+    androidTestImplementation(AndroidTestingLib.ANDROIDX_TEST_EXT_JUNIT)
+    androidTestImplementation(AndroidTestingLib.ANDROIDX_TEST_RULES)
+    androidTestImplementation(AndroidTestingLib.ESPRESSO_CORE)
+
+    //Compose
+    implementation(Compose.COMPOSE_UI)
+    implementation(Compose.COMPOSE_MATERIAL)
+    implementation(Compose.COMPOSE_PREVIEW)
+    implementation(Compose.COMPOSE_ACTIVITY)
+    implementation(Compose.COMPOSE_VIEWMODEL)
+    implementation(AndroidKTX.ANDROIDX_KTX_RUNTIME)
+    implementation(Compose.COMPOSE_RUNTIME)
+
+    // Navigation
+    implementation(Navigation.HILT_NAVIGATION)
+    implementation(Navigation.NAVIGATION)
+    implementation(Navigation.DESTINATION)
+    ksp(Navigation.DESTINATION_KSP)
+
+    // RETROFIT
+    implementation(RETROFIT.RETROFIT)
+    implementation(RETROFIT.RETROFIT_COROU_ADAPTER)
+    implementation(RETROFIT.RETROFIT_JSON_CONVERTER)
+    implementation(Logging.LOGGING)
+    implementation(GSON.GSON)
+
+
+    //Coroutines
+    implementation(Coroutines.COROUTINES_ANDROID)
+    implementation(Coroutines.COROUTINES_CORE)
+
+    //Hilt
+    implementation(Hilt.HILT)
+    kapt(Hilt.HILT_ANDROID_COMPILER)
+    kapt(Hilt.HILT_COMPLIER)
+
+    implementation("io.coil-kt:coil-compose:2.2.0")
+
+    //Paging 3
+    implementation("androidx.paging:paging-runtime:3.1.1")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha19")
+
 }
