@@ -60,7 +60,7 @@ class MoviesRemoteDataSource(
                     .Success(endOfPaginationReached = remoteKeys != null)
             }
         }
-        return if (catId.isNullOrEmpty()) {
+        return if (catId.isNullOrEmpty() || catId == "0") {
             loadAndCache(loadType, page)
         } else {
             MediatorResult.Success(endOfPaginationReached = true)

@@ -12,7 +12,7 @@ class GetMoviesCategoriesUseCase @Inject constructor(
 ) {
 
     suspend fun loadCategories() = moviesRepository.loadCategories().flatMapLatest {
-        val categoryAll = MovieCategoryDomain("All", null)
+        val categoryAll = MovieCategoryDomain("All", 0)
         val categoryMutable = it.toMutableList()
         categoryMutable.add(0, categoryAll)
         flowOf(categoryMutable)
