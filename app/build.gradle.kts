@@ -77,6 +77,7 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk7"))
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.hilt:hilt-work:1.0.0")
 
     androidTestImplementation(AndroidTestingLib.ANDROIDX_TEST_EXT_JUNIT)
     androidTestImplementation(AndroidTestingLib.ANDROIDX_TEST_RULES)

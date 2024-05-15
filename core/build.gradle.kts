@@ -12,7 +12,7 @@ android {
         minSdk = 21
         targetSdk = 33
 
-        buildConfigField("String", "API_TOKEN", "\"c9856d0cb57c3f14bf75bdc6c063b8f3\"")
+        buildConfigField("String", "API_TOKEN", "\"c50f5aa4e7c95a2a553d29b81aad6dd0\"")
         buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/\"")
         buildConfigField("String", "IMAGE_BASE_URL", "\"https://image.tmdb.org/t/p/w200/\"")
 
